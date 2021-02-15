@@ -1,0 +1,41 @@
+.signUp__container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signUp__wrapper {
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.signUp__form {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 350px;
+  height: 500px;
+  padding: 20px;
+}
+
+.signUp__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 90px;
+}
+
+.signUp__Container-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.SingUp__btn-redirection {
+  font-weight: bold;
+}
