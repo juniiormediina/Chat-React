@@ -13,14 +13,16 @@ const Chat = (props) => {
   const getGifs = (e) => {
     props.setMessage("");
     fetch(
-      "https://api.giphy.com/v1/gifs/trending?api_key=bHQ3e4OvEpB1yAOqNWp84iaTQW3HQH4R&limit=12&rating=g"
+      "https://api.giphy.com/v1/gifs/trending?api_key=7wNkqg36lkAGX1ZqzH5vZUc1UZJ3zHEb&limit=12&rating=g"
     ).then((response) => {
+      console.log(response);
       response.json().then((data) => {
         setShow(true);
         setGifs(data.data);
       });
     });
   };
+
   return (
     <div className="chat__container">
       <div className="chat__form">
@@ -46,6 +48,17 @@ const Chat = (props) => {
             }}
           >
             <i className="far fa-paper-plane"></i> Send
+          </button>
+          <button
+            onClick={() => {
+              getGifs();
+            }}
+            type="button"
+            className="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
+            Gifos
           </button>
           <Modal
             show={show}

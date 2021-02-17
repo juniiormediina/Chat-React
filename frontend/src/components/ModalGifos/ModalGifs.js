@@ -1,20 +1,24 @@
 import React from "react";
 
+import "./ModalGifs.css";
+
 const ModalGifs = (props) => {
   return (
     <div
-      className="modal fade"
-      id="exampleModal"
-      tabIndex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
       show={props.show}
       onHide={() => props.setShow(false)}
+      className="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabIndex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
     >
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
+            <h5 className="modal-title" id="staticBackdropLabel">
               Gifs
             </h5>
             <button
@@ -45,9 +49,6 @@ const ModalGifs = (props) => {
               data-bs-dismiss="modal"
             >
               Close
-            </button>
-            <button type="button" className="btn btn-primary">
-              Save changes
             </button>
           </div>
         </div>
