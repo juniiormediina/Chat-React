@@ -1,9 +1,9 @@
 .userList__container {
   height: 600px;
-  width: 280px;
   border: 1px solid #000000;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 20px;
+  margin-right: 20px;
 }
 
 .userList__container > h2 {

@@ -2,8 +2,9 @@ const sequelize = require("./index");
 const { DataTypes } = require("sequelize");
 
 const User = sequelize.define(
-  "Users",
+  "users",
   {
+    // Model attributes are defined here
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -33,10 +34,7 @@ const User = sequelize.define(
   },
   {
     freezeTableName: true,
-    timestamps: false,
   }
 );
-
 User.sync();
-
 module.exports = User;

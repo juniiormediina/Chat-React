@@ -6,7 +6,7 @@ const {
   CheckDuplicateNickName,
 } = require("../middlewares/verify.middleware");
 
-const { signUp, signIn } = require("../controllers/user.controller");
+const { userCreate, userLogin } = require("../controllers/user.controller");
 
 router.post(
   "/signUp",
@@ -15,7 +15,7 @@ router.post(
   (req, res) => {
     const data = req.body;
     console.log(data);
-    signUp(data)
+    userCreate(data)
       .then((user) => {
         res.status(200).json(user);
       })
@@ -27,7 +27,7 @@ router.post(
 
 router.post("/signIn", (req, res) => {
   const data = req.body;
-  signIn(data)
+  userLogin(data)
     .then((jwt) => {
       res.status(200).json(jwt);
     })

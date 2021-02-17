@@ -11,8 +11,8 @@ function App() {
     <Router>
       <div className="App">
         <Route exact path="/" component={SignIn} />
-        <Route path="/signUp" component={SignUp} />
         <Route path="/chatroom" component={ChatRoom} />
+        <Route path="/signUp" component={SignUp} />
       </div>
     </Router>
   );

@@ -1,20 +1,19 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
-require("dotenv").config();
-const bcrypt = require("bcryptjs");
+const User = require("../models/User.model");
+const bcrypt = require("bcrypt");
 
-const signUp = async (data) => {
-  return new Promise(async (res, rejc) => {
+const userCreate = (data) => {
+  return new Promise((res, rejc) => {
     if (
-      !data.nickName ||
-      !data.email ||
       !data.firstName ||
+      !data.email ||
       !data.lastName ||
+      !data.nickName ||
       !data.password
     ) {
-      rejc({ status: 406, message: "Please fill all fields" });
+      rejc({ status: 400, message: "Please fill all fields" });
     } else {
-      bcrypt.hash(data.password, 10, (err, encrypted) => {
+      bcrypt.hash(data.password, 7, function (err, encrypted) {
         if (err) {
           rejc({
             status: 500,
@@ -29,30 +28,31 @@ const signUp = async (data) => {
               res({ message: "user created successfully" });
             })
             .catch((err) => {
-              rejc({
-                status: 500,
-                message:
-                  "Sorry, the server has presented an error. Try again later",
-              });
+              if (err.fields.nickName) {
+                rejc({ status: 400, message: "The nickName already exists" });
+              } else {
+                rejc({
+                  status: 500,
+                  message:
+                    "Sorry, the server has presented an error. Try again later",
+                });
+              }
             });
         }
       });
     }
   });
 };
-
-const signIn = (data) => {
+const userLogin = (data) => {
   return new Promise(async (res, rejc) => {
     if (!data.nickName || !data.password) {
-      rejc({ status: 406, message: "Please fill all fields" });
+      rejc({ status: 400, message: "Please fill all fields" });
     } else {
       const { password, nickName } = data;
-
       let user = await User.findOne({
         where: { nickName: nickName },
         raw: true,
       });
-
       if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
           if (err) {
@@ -81,16 +81,21 @@ const signIn = (data) => {
   });
 };
 
+//SOCKET
 const connectedUsers = () => {
   return new Promise((res, rejc) => {
     User.findAll({ where: { connected: 1 } })
       .then((users) => {
         res(users);
       })
-      .catch((error) => {
-        rejc(error);
+      .catch((err) => {
+        rejc(err);
       });
   });
 };
 
-module.exports = { signUp, signIn, connectedUsers };
+module.exports = {
+  userCreate,
+  userLogin,
+  connectedUsers,
+};

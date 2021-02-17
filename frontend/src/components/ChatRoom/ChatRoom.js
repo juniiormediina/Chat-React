@@ -5,9 +5,9 @@ import io from "socket.io-client";
 import jwt from "jsonwebtoken";
 
 /* Components */
-import Chat from "./Chat";
-import UserList from "./UserList";
-import Messages from "./Messages";
+import Chat from "../Chat/Chat";
+import UserList from "../UserList/UserList";
+import Messages from "../Messages/Messages";
 
 /* Styles */
 import "./ChatRoom.css";

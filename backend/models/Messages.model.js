@@ -1,11 +1,11 @@
 const sequelize = require("./index");
 const { DataTypes } = require("sequelize");
-
 const User = require("./User.model");
 
 const Message = sequelize.define(
   "Messages",
   {
+    // Model attributes are defined here
     text: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,7 +24,6 @@ const Message = sequelize.define(
     timestamps: false,
   }
 );
-
 Message.belongsTo(User);
 
 module.exports = Message;

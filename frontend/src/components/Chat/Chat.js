@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 /* Components */
-import Modal from "./ModalGifs";
+import Modal from "../ModalGifos/ModalGifs";
 
 /* Styles */
 import "./chat.css";
@@ -25,7 +25,7 @@ const Chat = (props) => {
     <div className="chat__container">
       <div className="chat__form">
         <textarea
-          placeholder="Write your message here!"
+          placeholder="Enter your message here!"
           name=""
           id=""
           cols="30"

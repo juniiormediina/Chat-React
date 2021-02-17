@@ -4,10 +4,9 @@ const http = require("http");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
-/* Initializations */
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -15,27 +14,25 @@ const io = socketIo(server, {
     origin: "*",
   },
 });
+const { connectedUsers } = require("./controllers/user.controller");
+
+/* Routes */
+const userRoutes = require("./routes/user.routes");
 
 /* Models DB */
-require("./models/index.js");
 const User = require("./models/User.model");
+const Message = require("./models/Messages.model");
 User.sync();
-const Message = require("./models/Message.model");
 Message.sync();
 
 /* Middlewares */
-app.use(express.json());
-/* app.use(helmet()); */
 app.use(cors());
+app.use(express.json());
+app.use("/users", userRoutes);
+app.use(helmet());
 app.use(morgan("dev"));
 
-/* Routes */
-app.use("/users", require("./routes/user.routes"));
-
 /* Socket */
-
-const { connectedUsers } = require("./controllers/user.controller");
-
 io.use(function (socket, next) {
   if (socket.handshake.query && socket.handshake.query.token) {
     jwt.verify(
@@ -89,7 +86,6 @@ io.on("connection", (socket) => {
     });
   });
 });
-
 const updateUsers = () => {
   connectedUsers()
     .then((users) => {
@@ -99,7 +95,6 @@ const updateUsers = () => {
       console.log(error);
     });
 };
-
 const getHistory = (socket, data) => {
   socket.emit("getHistory", data);
 };
