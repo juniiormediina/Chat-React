@@ -1,0 +1,27 @@
+.userList__container {
+  height: 600px;
+  width: 280px;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.userList__container > h2 {
+  text-align: center;
+}
+
+.userList__wrapper {
+  display: flex;
+  flex-flow: column;
+  align-items: end;
+}
+.userList__wrapper > li {
+  text-decoration: none;
+  list-style: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.icon-connected {
+  background-image: url(../../assets/images/avatar.svg);
+}

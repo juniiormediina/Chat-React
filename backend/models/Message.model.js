@@ -20,7 +20,7 @@ const Message = sequelize.define(
     },
   },
   {
-    freezeTableName: "Messages",
+    freezeTableName: true,
     timestamps: false,
   }
 );

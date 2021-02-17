@@ -4,28 +4,17 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 
 const signUp = async (data) => {
-  /* const { firstName, lastName, email, profile, password } = req.body;
-  const newUser = new User({
-    firstName,
-    lastName,
-    email,
-    profile,
-    password: await encryptPassword(password),
-  });
-  const savedUser = await newUser.save();
-  res.status(200).json(savedUser); */
-
   return new Promise(async (res, rejc) => {
     if (
+      !data.nickName ||
+      !data.email ||
       !data.firstName ||
       !data.lastName ||
-      !data.email ||
-      !data.password ||
-      !data.nickName
+      !data.password
     ) {
       rejc({ status: 406, message: "Please fill all fields" });
     } else {
-      bcrypt.hash(data.password, 10, (err, hash) => {
+      bcrypt.hash(data.password, 10, (err, encrypted) => {
         if (err) {
           rejc({
             status: 500,
@@ -33,10 +22,11 @@ const signUp = async (data) => {
               "Sorry, the server has presented an error. Try again later",
           });
         } else {
-          data.password = hash;
+          data.password = encrypted;
           User.create(data)
             .then((user) => {
-              res(user);
+              delete user.dataValues.password;
+              res({ message: "user created successfully" });
             })
             .catch((err) => {
               rejc({
@@ -51,37 +41,39 @@ const signUp = async (data) => {
   });
 };
 
-const signIn = (email, password) => {
-  /* const userFound = User.findOne({ where: { email: req.body.email } });
-  if (!userFound) return res.status(400).json({ message: "User not found" });
-  console.log(req.body.password);
-  const matchPassword = comparePassword(
-    req.body.password,
-    userFound.password
-  ).catch((err) =>
-    res.status(401).json({ message: "las contraseñas no coinciden" })
-  );
-  if (!matchPassword)
-    return res.status(401).json({ token: null, message: "Invalid password" });
-  //TODO:Verificar porque genera error (OJO ESTA FUNCIONANDO BIEN)
-  const token = jwt.sign({ id: userFound.id }, process.env.JWT_SECRET, {
-    expiresIn: 86400, // 24 hours
-  });
-  res.status(200).json({ token }); */
+const signIn = (data) => {
   return new Promise(async (res, rejc) => {
-    if (!email || !password) {
+    if (!data.nickName || !data.password) {
       rejc({ status: 406, message: "Please fill all fields" });
     } else {
-      let user = await User.findOne({ where: { email: email } });
-      let comparePassword = await bcrypt.compare(password, user.password);
+      const { password, nickName } = data;
 
-      if (user && comparePassword) {
-        delete user.password;
-        res(
-          jwt.sign(user, process.env.JWT_SECRET, {
-            expiresIn: "1h",
-          })
-        );
+      let user = await User.findOne({
+        where: { nickName: nickName },
+        raw: true,
+      });
+
+      if (user) {
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            rejc({
+              status: 500,
+              message:
+                "Sorry, the server has presented an error. Try again later",
+            });
+          }
+          if (result) {
+            delete user.password;
+            delete user.connected;
+            res({
+              token: jwt.sign(user, process.env.JWT_SECRET, {
+                expiresIn: 86400, // 24 hours
+              }),
+            });
+          } else {
+            rejc({ status: 401, message: `Invalid password o user` });
+          }
+        });
       } else {
         rejc({ status: 401, message: `Invalid password o user` });
       }
@@ -89,4 +81,16 @@ const signIn = (email, password) => {
   });
 };
 
-module.exports = { signUp, signIn };
+const connectedUsers = () => {
+  return new Promise((res, rejc) => {
+    User.findAll({ where: { connected: 1 } })
+      .then((users) => {
+        res(users);
+      })
+      .catch((error) => {
+        rejc(error);
+      });
+  });
+};
+
+module.exports = { signUp, signIn, connectedUsers };

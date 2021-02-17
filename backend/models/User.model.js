@@ -32,9 +32,11 @@ const User = sequelize.define(
     },
   },
   {
-    freezeTableName: "Users",
-    timestamps: true,
+    freezeTableName: true,
+    timestamps: false,
   }
 );
+
+User.sync();
 
 module.exports = User;

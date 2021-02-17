@@ -13,26 +13,26 @@ router.post(
   CheckDuplicateEmail,
   CheckDuplicateNickName,
   (req, res) => {
-    /* signUp(req, res); */
-    signUp(req.body)
+    const data = req.body;
+    console.log(data);
+    signUp(data)
       .then((user) => {
         res.status(200).json(user);
       })
       .catch((error) => {
-        res.status(error.status).json(error.message);
+        res.status(error.status).json({ message: error.message });
       });
   }
 );
 
 router.post("/signIn", (req, res) => {
-  // signIn(req, res);
-  const { email, password } = req.body;
-  signIn(email, password)
+  const data = req.body;
+  signIn(data)
     .then((jwt) => {
       res.status(200).json(jwt);
     })
     .catch((error) => {
-      res.status(error.status).json(error.message);
+      res.status(error.status).json({ message: error.message });
     });
 });
 

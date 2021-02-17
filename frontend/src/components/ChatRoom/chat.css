@@ -1,0 +1,32 @@
+.chat__container {
+  height: 150px;
+  width: 780px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.chat__form {
+  height: 110px;
+  align-items: center;
+  display: flex;
+}
+
+.chat__form > textarea {
+  overflow: hidden;
+  height: 110px;
+  border-radius: 10px;
+  width: 660px;
+}
+.chat__form > textarea:focus {
+  outline: none;
+}
+
+.chat__form > button {
+  margin-left: 5px;
+}
+
+.chat__wrapper-btn {
+  display: flex;
+}
